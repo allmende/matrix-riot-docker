@@ -42,12 +42,10 @@ RUN chmod a+x /start.sh \
     && GIT_VEC=$(git ls-remote https://github.com/vector-im/riot-web $BV_VEC | cut -f 1) \
     && echo "riot:  $BV_VEC ($GIT_VEC)" > /synapse.version \
     && cp config.sample.json config.json \
-    && sed -i 's/\/matrix.org/\/matrix.allmende.io/' config.json \
+    && sed -i 's/\/matrix.org/\/okfn-de-test.matrix.allmende.io/' config.json \
     && sed -i 's/\/vector.im/\/riot.im/' config.json \
-    && sed -i 's/Riot/Allmende/' config.json \
-    && sed -i 's/\"matrix.org\"/\"matrix.org\",\ \"matrix.allmende.io\"/' config.json \
-    && sed -i 's/piwik.riot.im/piwik.allmende.io/' config.json \
-    && sed -i 's/1/13/' config.json \
+    && sed -i 's/Riot/OKFNde/' config.json \
+    && sed -i 's/\"matrix.org\"/\"matrix.org\",\ \"matrix.allmende.io\",\ \"okfn-de-test.matrix.allmende.io\"/' config.json \
     && npm run build \
     ; \
     apk del \
