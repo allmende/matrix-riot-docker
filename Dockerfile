@@ -10,7 +10,8 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download
-ENV BV_VEC=master
+ARG BV_VEC
+ENV BV_VEC=${BV_VEC:-master}
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
 # command.
@@ -30,12 +31,12 @@ RUN chmod a+x /start.sh \
         nodejs \
         sqlite-libs \
         unzip \
-        ; \
+        || exit 1 ; \
     npm install -g webpack http-server \
     && curl -L https://github.com/vector-im/riot-web/archive/$BV_VEC.zip -o v.zip \
     && unzip v.zip \
     && rm v.zip \
-    && mv riot-web-$BV_VEC riot-web \
+    && mv riot-web-* riot-web \
     && cd riot-web \
     && npm install \
     && rm -rf /riot-web/node_modules/phantomjs-prebuilt/phantomjs \
@@ -49,6 +50,7 @@ RUN chmod a+x /start.sh \
     && sed -i 's/piwik.riot.im/piwik.allmende.io/' config.json \
     && sed -i 's/1/13/' config.json \
     && npm run build \
+    || exit 1 \
     ; \
     apk del \
         git \
