@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
 # Maintainer
-MAINTAINER Silvio Fricke <silvio.fricke@gmail.com>, Jon Richter <jon@allmende.io>
+MAINTAINER Silvio Fricke <silvio.fricke@gmail.com>, Jon Richter <jon@allmende.io>, Andreas Peters <support@aventer.biz>
 
 # install homeserver template
 COPY adds/start.sh /start.sh
@@ -9,8 +9,8 @@ COPY adds/start.sh /start.sh
 # startup configuration
 ENTRYPOINT ["/start.sh"]
 
-# Git branch to download
-ARG BV_VEC
+# Git branch to download  
+ARG BV_VEC=v0.15.6
 ENV BV_VEC=${BV_VEC:-master}
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
@@ -41,15 +41,10 @@ RUN chmod a+x /start.sh \
     && npm install \
     && rm -rf /riot-web/node_modules/phantomjs-prebuilt/phantomjs \
     && GIT_VEC=$(git ls-remote https://github.com/vector-im/riot-web $BV_VEC | cut -f 1) \
-    && echo "riot:  $BV_VEC ($GIT_VEC)" > /synapse.version \
-    && cp config.sample.json config.json \
-    && sed -i 's/\/matrix.org/\/matrix.allmende.io/' config.json \
-    && sed -i 's/\/vector.im/\/riot.im/' config.json \
-    && sed -i 's/Riot/Allmende/' config.json \
-    && sed -i 's/\"matrix.org\"/\"matrix.org\",\ \"matrix.allmende.io\"/' config.json \
-    && sed -i 's/piwik.riot.im/piwik.allmende.io/' config.json \
-    && sed -i 's/1/13/' config.json \
-    && npm run build \
+    && echo "riot:  $BV_VEC ($GIT_VEC)" > /synapse.version
+COPY config.allmende.json /riot-web/config.json
+WORKDIR /riot-web/ 
+RUN npm run build \
     || exit 1 \
     ; \
     apk del \
@@ -57,3 +52,4 @@ RUN chmod a+x /start.sh \
         unzip \
         ; \
     rm -rf /var/lib/apk/* /var/cache/apk/*
+
