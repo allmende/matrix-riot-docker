@@ -6,8 +6,10 @@
     "disable_login_language_selector": false,
     "disable_3pid_login": false,
     "brand": "Allmende",
-    "integrations_ui_url": "https://scalar.vector.im/",
-    "integrations_rest_url": "https://scalar.vector.im/api",
+    "integrations_ui_url": "https://connect.allmende.io/riot",
+    "integrations_rest_url": "https://connect.allmende.io/api/v1/scalar",
+    "integrations_widgets_urls": ["https://connect.allmende.io/widgets"],
+    "integrations_jitsi_widget_url": "https://connect.allmende.io/widgets/jitsi",
     "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
     "features": {
         "feature_groups": "labs",
