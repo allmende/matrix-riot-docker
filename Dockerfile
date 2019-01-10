@@ -29,6 +29,7 @@ RUN chmod a+x /start.sh \
         libjpeg-turbo \
         libssl1.0 \
         nodejs \
+        nodejs-npm \
         sqlite-libs \
         unzip \
         || exit 1 ; \
