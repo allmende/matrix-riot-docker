@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.8
 
 # Maintainer
 MAINTAINER Silvio Fricke <silvio.fricke@gmail.com>, Jon Richter <jon@allmende.io>, Andreas Peters <support@aventer.biz>
