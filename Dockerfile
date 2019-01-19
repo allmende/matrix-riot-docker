@@ -23,7 +23,6 @@ RUN chmod a+x /start.sh \
     && apk update \
     && apk add \
         curl \
-        git \
         libevent \
         libffi \
         libjpeg-turbo \
@@ -31,6 +30,7 @@ RUN chmod a+x /start.sh \
         nodejs \
         nodejs-npm \
         sqlite-libs \
+	git \
         unzip \
         || exit 1 ; \
     npm install -g webpack http-server \
@@ -40,17 +40,32 @@ RUN chmod a+x /start.sh \
     && mv riot-web-* riot-web \
     && cd riot-web \
     && npm install \
-    && rm -rf /riot-web/node_modules/phantomjs-prebuilt/phantomjs \
-    && GIT_VEC=$(git ls-remote https://github.com/vector-im/riot-web $BV_VEC | cut -f 1) \
-    && echo "riot:  $BV_VEC ($GIT_VEC)" > /synapse.version
+    && rm -rfi /riot-web/node_modules/phantomjs-prebuilt/phantomjs
+
 COPY config.allmende.json /riot-web/config.json
-WORKDIR /riot-web/ 
+
+WORKDIR /riot-web
 RUN npm run build \
     || exit 1 \
-    ; \
+    ;
+
+WORKDIR /
+
+RUN mv /riot-web/webapp / ; \
+    echo "riot:  $BV_VEC " > /webapp/synapse.version ; \
+    rm -rf /riot-web ; \
+    rm -rf /root/.npm ; \
+    rm -rf /tmp/* ; \
+    rm -rf /urs/lib/node_modules ; \
     apk del \
-        git \
         unzip \
+        libevent \
+        libffi \
+        libjpeg-turbo \
+        libssl1.0 \
+        sqlite-libs \
+	git \
+	curl \
         ; \
     rm -rf /var/lib/apk/* /var/cache/apk/*
 
