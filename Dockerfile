@@ -51,7 +51,7 @@ RUN npm run build \
 WORKDIR /
 
 RUN mv /riot-web/webapp / ; \
-    echo "riot:  $BV_VEC " > /webapp/synapse.version ; \
+    echo "riot:  $BV_VEC " > /webapp/version ; \
     rm -rf /riot-web ; \
     rm -rf /root/.npm ; \
     rm -rf /tmp/* ; \
