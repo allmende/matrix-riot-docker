@@ -10,7 +10,7 @@ COPY adds/start.sh /start.sh
 ENTRYPOINT ["/start.sh"]
 
 # Git branch to download  
-ARG BV_VEC=v0.17.8
+ARG BV_VEC=v1.0.3
 ENV BV_VEC=${BV_VEC:-master}
 
 # To rebuild the image, add `--build-arg REBUILD=$(date)` to your docker build
@@ -39,8 +39,7 @@ RUN chmod a+x /start.sh \
     && rm v.zip \
     && mv riot-web-* riot-web \
     && cd riot-web \
-    && npm install \
-    && rm -rfi /riot-web/node_modules/phantomjs-prebuilt/phantomjs
+    && npm install
 
 COPY config.allmende.json /riot-web/config.json
 
